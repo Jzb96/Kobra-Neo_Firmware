@@ -580,15 +580,16 @@ constexpr uint8_t epps = ENCODER_PULSES_PER_STEP;
       millis_t MarlinUI::expire_status_ms; // = 0
     #endif
   #endif
-//*******************************ÒòÎªÒªÔÚÕâÀï¼ÓÑ¡ÔñÏî£¬ËùÒÔÐèÒªÔö¼ÓÒ»ÏÂ±äÁ¿£¬±íÊ¾±»Ñ¡ÖÐµÄÄÇ¸öÏî£¬È»ºóÄÇ¸öÏî¾ÍË³±ãÑÕÉ«±ä³ÉÉÁË¸ÐÍ*************
-//************************0±íÊ¾Ã»ÓÐÑ¡ÖÐ£¬µã»÷¾Í»á½øÈëÖ÷½çÃæ*********************
-//************************1±íÊ¾Ñ¡ÖÐÅç×ì£¬µã»÷¾ÍÐÞ¸ÄÅç×ìÎÂ¶È*********************
-//************************2±íÊ¾ÈÈ´²£¬3·çÉÈ£¬4´òÓ¡ËÙ¶È£¬5ËÙ±È£¬6ÔÝÎÞ***************
+//*******************************ï¿½ï¿½ÎªÒªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½î£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Ò»ï¿½Â±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ñ¡ï¿½Ðµï¿½ï¿½Ç¸ï¿½ï¿½î£¬È»ï¿½ï¿½ï¿½Ç¸ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½Ë¸ï¿½ï¿½*************
+//************************0ï¿½ï¿½Ê¾Ã»ï¿½ï¿½Ñ¡ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*********************
+//************************1ï¿½ï¿½Ê¾Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ì£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¶ï¿½*********************
+//************************2ï¿½ï¿½Ê¾ï¿½È´ï¿½ï¿½ï¿½3ï¿½ï¿½ï¿½È£ï¿½4ï¿½ï¿½Ó¡ï¿½Ù¶È£ï¿½5ï¿½Ù±È£ï¿½6ï¿½ï¿½ï¿½ï¿½***************
   void MarlinUI::status_screen() {
   
 
        int16_t old_data,new_data;
       static int16_t seclect=6;
+      static bool host_pause_requested=false;
       const bool busy = printingIsActive();
       const bool Paused= printingIsPaused();
      TERN_(HAS_LCD_MENU, ENCODER_RATE_MULTIPLY(false));
@@ -645,7 +646,7 @@ constexpr uint8_t epps = ENCODER_PULSES_PER_STEP;
       if (use_click()) {
 
        switch(seclect){
-//       case 0:             //È¥Ö÷½çÃæ
+//       case 0:             //È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //            #if BOTH(FILAMENT_LCD_DISPLAY, SDSUPPORT)
 //              next_filament_display = millis() + 5000UL;  // Show status message for 5s
 //            #endif
@@ -681,7 +682,7 @@ constexpr uint8_t epps = ENCODER_PULSES_PER_STEP;
          break;
          case 4:
 		  Beforeprobe_offset = probe.offset.z;
-          goto_screen(lcd_babystep_zoffset);    //z ÖáÆ«ÒÆ
+          goto_screen(lcd_babystep_zoffset);    //z ï¿½ï¿½Æ«ï¿½ï¿½
           ui.refresh();                         //
           seclect=4;
         
@@ -703,7 +704,7 @@ constexpr uint8_t epps = ENCODER_PULSES_PER_STEP;
           seclect=6;
    
         break;
-        case 7:               //ÔÝÍ£»òÕß»Ö¸´
+        case 7:               //ï¿½ï¿½Í£ï¿½ï¿½ï¿½ß»Ö¸ï¿½
         if(TERN0(SDSUPPORT, IS_SD_PRINTING() || IS_SD_PAUSED()))
 		{
               if(busy)
@@ -718,15 +719,43 @@ constexpr uint8_t epps = ENCODER_PULSES_PER_STEP;
 //              }
                 seclect=1;
         }
+        #ifdef HOST_ACTION_COMMANDS
+      else
+      {
+        if( !busy )
+        {
+          LCD_MESSAGEPGM(MSG_HOST_START_PRINT);
+          host_action_start();
+        }
+        else if( host_pause_requested )
+        {
+          LCD_MESSAGEPGM(MSG_RESUME_PRINT);
+          host_pause_requested = false;
+          host_action_resume();
+        }
+        else
+        {
+          LCD_MESSAGEPGM(MSG_PAUSING);
+          host_pause_requested = true;
+          host_action_pause();
+        }
+      }
+#endif
         break;
-        
-        case 8:               //ÖÐÖ¹´òÓ¡
+
+        case 8:               //ï¿½ï¿½Ö¹ï¿½ï¿½Ó¡
         if(TERN0(SDSUPPORT, IS_SD_PRINTING() || IS_SD_PAUSED()))
 		{
           goto_screen(LCD_abort_pring);
           ui.refresh();  
           seclect=1;
         }
+        #ifdef ACTION_ON_CANCEL
+      else
+      {
+        host_action_cancel();
+      }
+#endif
         break;
         default:
               seclect=1;
@@ -790,7 +819,11 @@ constexpr uint8_t epps = ENCODER_PULSES_PER_STEP;
                 seclect++;
                if((!busy)&&(!Paused))
                {
+                #ifdef ACTION_ON_START
+                  if(seclect>7)
+                #else	
                   if(seclect>6)
+                #endif
                   {
                     seclect=1;
                   }
@@ -807,7 +840,11 @@ constexpr uint8_t epps = ENCODER_PULSES_PER_STEP;
                   {
                         if((!busy)&&(!Paused))
                         {
+                          #ifdef ACTION_ON_START
+                          seclect=7;
+                          #else							
                           seclect=6;
+                          #endif
                         }
                         else
                         {
