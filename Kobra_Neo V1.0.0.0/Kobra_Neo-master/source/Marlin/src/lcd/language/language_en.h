@@ -46,14 +46,14 @@
 namespace Language_en {
   constexpr uint8_t CHARSIZE              = 2;
   LSTR MSG_LEVEING_HOME             	  = _UxGT("Home");
-  LSTR MSG_WAIT_LEVELING_HEAT             = _UxGT("Wait Leveing heat");
+  LSTR MSG_WAIT_LEVELING_HEAT             = _UxGT("Heating For Levelling");
   LSTR MSG_ABOUT                        	= _UxGT("About");
   LSTR LANGUAGE                           = _UxGT("English");
   LSTR LANGUAGE_2                         = _UxGT("English");
   LSTR heat_MSG                           = _UxGT("Nozzle Heating");  
-  LSTR heat_waitMSG                       = _UxGT("Please Wating...");  
+  LSTR heat_waitMSG                       = _UxGT("Heating Please Wait...");  
   LSTR Tool_MSG                           = _UxGT("Tool");
-  LSTR Operate_MSG                        = _UxGT("Operate the machine");    
+  LSTR Operate_MSG                        = _UxGT("Operate The Machine");    
   LSTR Home_motor                         = _UxGT("Home");
   LSTR LANGUAGE_choose                    = _UxGT("Language");   
   // These strings should be translated
@@ -65,11 +65,11 @@ namespace Language_en {
   LSTR MSG_MEDIA_ABORTING                 = _UxGT("Aborting...");
   LSTR MSG_MEDIA_INSERTED                 = MEDIA_TYPE_EN _UxGT(" Inserted");
   LSTR MSG_MEDIA_REMOVED                  = MEDIA_TYPE_EN _UxGT(" Removed");
-  LSTR MSG_MEDIA_WAITING                  = _UxGT("Waiting for card");
+  LSTR MSG_MEDIA_WAITING                  = _UxGT("Waiting For Card");
   LSTR MSG_SD_INIT_FAIL                   = _UxGT("SD Init Fail");
-  LSTR MSG_MEDIA_READ_ERROR               = MEDIA_TYPE_EN _UxGT(" read error");
-  LSTR MSG_MEDIA_USB_REMOVED              = _UxGT("USB device removed");
-  LSTR MSG_MEDIA_USB_FAILED               = _UxGT("USB start failed");
+  LSTR MSG_MEDIA_READ_ERROR               = MEDIA_TYPE_EN _UxGT("Read error");
+  LSTR MSG_MEDIA_USB_REMOVED              = _UxGT("USB Device Removed");
+  LSTR MSG_MEDIA_USB_FAILED               = _UxGT("USB start Failed");
   LSTR MSG_KILL_SUBCALL_OVERFLOW          = _UxGT("Subcall Overflow");
   LSTR MSG_LCD_ENDSTOPS                   = _UxGT("Endstops"); // Max length 8 characters
   LSTR MSG_LCD_SOFT_ENDSTOPS              = _UxGT("Soft Endstops");
@@ -160,8 +160,8 @@ namespace Language_en {
   LSTR MSG_BED_LEVELING                   = _UxGT("Leveling");
   LSTR MSG_LEVEL_BED                      = _UxGT("Auto Leveling");
 	LSTR MSG_LEVEL_POP_UP                   = _UxGT("Auto Leveling...");
-	LSTR MSG_LEVEL_FAILD                    = _UxGT("Leveling Faild");     // "Level bed"
-	LSTR MSG_LEVEL_FINSH                    = _UxGT("Leveling done");     // "Level bed"
+	LSTR MSG_LEVEL_FAILD                    = _UxGT("Leveling Failed");     // "Level bed"
+	LSTR MSG_LEVEL_FINSH                    = _UxGT("Leveling Done");     // "Level bed"
   LSTR MSG_BED_TRAMMING                   = _UxGT("Bed Tramming");
   LSTR MSG_BED_TRAMMING_RAISE             = _UxGT("Adjust bed until the probe triggers.");
   LSTR MSG_BED_TRAMMING_IN_RANGE          = _UxGT("Corners within tolerance. Bed trammed.");
