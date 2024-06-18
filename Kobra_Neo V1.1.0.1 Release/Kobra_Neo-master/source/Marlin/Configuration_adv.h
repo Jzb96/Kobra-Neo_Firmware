@@ -807,7 +807,7 @@
 #if ENABLED(ASSISTED_TRAMMING)
 
   // Define positions for probe points.
-  #define TRAMMING_POINT_XY { {  -6, 24 }, { 157,  24 }, { 157, 188 }, { -6, 188 } }
+  #define TRAMMING_POINT_XY { {  -6, 24 }, { 120,  24 }, { 120, 188 }, { -6, 188 } }
 
   // Define position names for probe points.
   #define TRAMMING_POINT_NAME_1 "Front-Left"
